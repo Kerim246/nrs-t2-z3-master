@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TableView fx:id="tableViewGradovi" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colGradId" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="colGradNaziv" prefWidth="100.0" text="%Naziv" />
+          <TableColumn fx:id="colGradStanovnika" prefWidth="90.0" text="%Stanovnika" />
+          <TableColumn fx:id="colGradDrzava" prefWidth="185.0" text="%Drzava" />
+        </columns>
+      </TableView>
+   </center>
+   <right>
+      <VBox prefHeight="400.0" prefWidth="148.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btnDodajGrad" mnemonicParsing="false" onAction="#actionDodajGrad" prefWidth="Infinity" text="%Dodaj_grad" />
+            <Button fx:id="btnDodajDrzavu" mnemonicParsing="false" onAction="#actionDodajDrzavu" prefWidth="Infinity" text="%Dodaj_drzavu" />
+            <Button fx:id="btnIzmijeniGrad" mnemonicParsing="false" onAction="#actionIzmijeniGrad" prefWidth="Infinity" text="%Izmijeni_grad" />
+            <Button fx:id="btnObrisiGrad" mnemonicParsing="false" onAction="#actionObrisiGrad" prefWidth="Infinity" text="%Obrisi_grad" />
+            <Button fx:id="btnStampa" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#actionPrintajIzvjestaj" text="%Stampa" VBox.vgrow="ALWAYS"/>
+            <Button fx:id="btnJezik" mnemonicParsing="false" onAction="#actionOdabirJezika" prefWidth="Infinity" text="%Jezik" />
+
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </right>
+</BorderPane>
