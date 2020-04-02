@@ -28,7 +28,7 @@ public class GradController {
     public ChoiceBox<Drzava> choiceDrzava;
     public ObservableList<Drzava> listDrzave;
     private Grad grad;
-    public TextField postanskiBroj;
+    public TextField fieldPostanskiBroj;
     private GeografijaDAO dao;
 
     private ObservableList<Znamenitosti> znamenitosti;
@@ -52,7 +52,7 @@ public class GradController {
         if (grad != null) {
             fieldNaziv.setText(grad.getNaziv());
             fieldBrojStanovnika.setText(Integer.toString(grad.getBrojStanovnika()));
-            postanskiBroj.setText(Integer.toString(grad.getPostanskiBroj()));
+            fieldPostanskiBroj.setText(Integer.toString(grad.getPostanskiBroj()));
             // choiceDrzava.getSelectionModel().select(grad.getDrzava());
             // ovo ne radi jer grad.getDrzava() nije identički jednak objekat kao član listDrzave
             for (Drzava drzava : listDrzave)
@@ -102,31 +102,31 @@ public class GradController {
 
         if (!sveOk) return;
 
-        String adresa = "http://c9.etf.unsa.ba/proba/postanskiBroj.php?postanskiBroj=" + postanskiBroj.getText();
+        String adresa = "http://c9.etf.unsa.ba/proba/postanskiBroj.php?postanskiBroj=" + fieldPostanskiBroj.getText();
 
         Thread thread = new Thread(() -> {
+            int postBroj = Integer.parseInt(fieldPostanskiBroj.getText());
             try {
-                URL url = new URL(adresa);
+                URL provjera = new URL("http://c9.etf.unsa.ba/proba/postanskiBroj.php?postanskiBroj="+postBroj);
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-                String provjera = "", line = null;
-                while ((line = in.readLine()) != null)
-                    provjera = provjera + line;
-                in.close();
-                if(provjera.equals("NOT OK")) {
-                    postanskiBroj.getStyleClass().removeAll("poljeIspravno");
-                    postanskiBroj.getStyleClass().add("poljeNijeIspravno");
-                } else {
-                    postanskiBroj.getStyleClass().removeAll("poljeNijeIspravno");
-                    postanskiBroj.getStyleClass().add("poljeIspravno");
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(provjera.openStream(), StandardCharsets.UTF_8));
+                String rez = "", line = null;
+                while ((line = buffer.readLine()) != null)
+                    rez = rez + line;
+                buffer.close();
+                if(rez.equals("OK")) {
+                    fieldPostanskiBroj.getStyleClass().removeAll("poljeNijeIspravno");
+                    fieldPostanskiBroj.getStyleClass().add("poljeIspravno");
+                } else if(rez.equals("NOT OK")){
+                    fieldPostanskiBroj.getStyleClass().removeAll("poljeIspravno");
+                    fieldPostanskiBroj.getStyleClass().add("poljeNijeIspravno");
 
                     Platform.runLater(() -> {
                         if (grad == null) grad = new Grad();
                         grad.setNaziv(fieldNaziv.getText());
                         grad.setBrojStanovnika(Integer.parseInt(fieldBrojStanovnika.getText()));
                         grad.setDrzava(choiceDrzava.getValue());
-                        grad.setPostanskiBroj(Integer.parseInt(postanskiBroj.getText()));
+                        grad.setPostanskiBroj(postBroj);
                         Stage stage = (Stage) fieldNaziv.getScene().getWindow();
                         stage.close();
                     });
